@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "479350528160",
+    "project_id": "rn-peacock",
+    "storage_bucket": "rn-peacock.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:479350528160:android:61f4d88c3e3c94c92fd1c5",
+        "android_client_info": {
+          "package_name": "com.rn_peacock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "479350528160-kbqnmvvccb8sgdrgr9tebeg7ll9lqgeh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rn_peacock",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "479350528160-tveavo7l61j2gmgigtogi7m75msi3ukl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJXosE7Ej-0tkU4YlI52kEbYjuHy2umYo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "479350528160-tveavo7l61j2gmgigtogi7m75msi3ukl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
