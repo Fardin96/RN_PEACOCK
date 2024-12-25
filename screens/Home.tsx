@@ -4,10 +4,11 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  View,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {YOUTUBE_API_KEY, YOUTUBE_API_V3} from '@env';
+import {useNavigation} from '@react-navigation/native';
 
 async function getVids(): Promise<any[]> {
   const url = `${YOUTUBE_API_V3}/videos?part=snippet&chart=mostPopular&maxResults=10&regionCode=es&&key=${YOUTUBE_API_KEY}`;
@@ -33,6 +34,7 @@ async function getVids(): Promise<any[]> {
 }
 
 function Home(): React.JSX.Element {
+  const navigation = useNavigation();
   const [videos, setVideos] = useState<any[]>([]);
 
   useEffect(() => {
@@ -51,14 +53,17 @@ function Home(): React.JSX.Element {
         contentContainerStyle={styles.scrollViewContent}
         showsVerticalScrollIndicator={false}>
         {videos.map(video => (
-          <View key={video.id} style={styles.videoContainer}>
+          <TouchableOpacity
+            key={video.id}
+            style={styles.videoContainer}
+            onPress={() => navigation.navigate('VideoPlayerScreen')}>
             <Image
               source={{uri: video.snippet.thumbnails.standard.url}}
               style={styles.img}
             />
 
             <Text style={styles.vidTitle}>{video.snippet.title}</Text>
-          </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
     </SafeAreaView>
@@ -72,6 +77,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'dimgray',
   },
 
   scrollView: {
