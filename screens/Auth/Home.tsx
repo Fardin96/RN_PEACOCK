@@ -57,7 +57,7 @@ function Home(): React.JSX.Element {
               style={styles.img}
             />
 
-            <Text style={{color: 'white'}}>{video.snippet.title}</Text>
+            <Text style={styles.vidTitle}>{video.snippet.title}</Text>
           </View>
         ))}
       </ScrollView>
@@ -74,26 +74,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  scrollView: {borderWidth: 1, borderColor: 'green'},
+  scrollView: {
+    // borderWidth: 1, borderColor: 'green'
+  },
 
   scrollViewContent: {flexGrow: 1},
 
   videoContainer: {
     // height: 100,
     // width: 300,
-    borderWidth: 1,
-    borderColor: 'red',
+    marginBottom: 25,
+
+    // borderWidth: 1,
+    // borderColor: 'red',
   },
 
   img: {
-    height: 100,
-    width: 300,
+    height: 200,
+    // width: 300,
   },
 
-  txt: {
-    color: 'white',
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
+  vidTitle: {color: 'white', fontSize: 20, fontWeight: 'bold'},
 });
