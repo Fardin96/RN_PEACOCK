@@ -1,8 +1,8 @@
 import React from 'react';
-import SignIn from './screens/Auth/SignIn';
+import Home from './screens/Auth/Home';
 
 function App(): React.JSX.Element {
-  return <SignIn />;
+  return <Home />;
 }
 
 export default App;
