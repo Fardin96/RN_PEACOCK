@@ -5,7 +5,13 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SignIn from './screens/Auth/SignIn';
 import VideoPlayerScreen from './screens/VideoPlayerScreen';
 
-const Stack = createNativeStackNavigator();
+export type RootStackParamList = {
+  Home: undefined;
+  SignIn: undefined;
+  VideoPlayerScreen: {videoId: string};
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App(): React.JSX.Element {
   return (

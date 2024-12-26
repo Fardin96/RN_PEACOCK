@@ -8,7 +8,11 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {YOUTUBE_API_KEY, YOUTUBE_API_V3} from '@env';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {RootStackParamList} from '../App';
+import {StackNavigationProp} from '@react-navigation/stack';
+
+type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 async function getVids(): Promise<any[]> {
   const url = `${YOUTUBE_API_V3}/videos?part=snippet&chart=mostPopular&maxResults=10&regionCode=es&&key=${YOUTUBE_API_KEY}`;
@@ -34,7 +38,7 @@ async function getVids(): Promise<any[]> {
 }
 
 function Home(): React.JSX.Element {
-  const navigation = useNavigation();
+  const navigation = useNavigation<HomeScreenNavigationProp>();
   const [videos, setVideos] = useState<any[]>([]);
 
   useEffect(() => {
@@ -46,6 +50,8 @@ function Home(): React.JSX.Element {
     fetchVideos();
   }, []);
 
+  // console.log('vids: ', videos);
+
   return (
     <SafeAreaView style={styles.root}>
       <ScrollView
@@ -56,7 +62,9 @@ function Home(): React.JSX.Element {
           <TouchableOpacity
             key={video.id}
             style={styles.videoContainer}
-            onPress={() => navigation.navigate('VideoPlayerScreen')}>
+            onPress={() =>
+              navigation.navigate('VideoPlayerScreen', {videoId: video.id})
+            }>
             <Image
               source={{uri: video.snippet.thumbnails.standard.url}}
               style={styles.img}
