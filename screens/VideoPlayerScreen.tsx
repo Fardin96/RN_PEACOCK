@@ -14,8 +14,6 @@ function VideoPlayerScreen(): React.JSX.Element {
   const route = useRoute<VideoPlayerScreenRouteProp>();
   const {videoId} = route.params;
 
-  console.log('first videoId: ', videoId);
-
   return (
     <View style={styles.root}>
       <YoutubePlayer

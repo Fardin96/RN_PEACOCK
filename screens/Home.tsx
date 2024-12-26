@@ -8,14 +8,15 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {YOUTUBE_API_KEY, YOUTUBE_API_V3} from '@env';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {RootStackParamList} from '../App';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 async function getVids(): Promise<any[]> {
-  const url = `${YOUTUBE_API_V3}/videos?part=snippet&chart=mostPopular&maxResults=10&regionCode=es&&key=${YOUTUBE_API_KEY}`;
+  const url = `${YOUTUBE_API_V3}/videos?part=snippet&chart=mostPopular&maxResults=10&key=${YOUTUBE_API_KEY}`;
+  // regionCode=es
 
   try {
     const response = await fetch(url, {
@@ -49,8 +50,6 @@ function Home(): React.JSX.Element {
 
     fetchVideos();
   }, []);
-
-  // console.log('vids: ', videos);
 
   return (
     <SafeAreaView style={styles.root}>
