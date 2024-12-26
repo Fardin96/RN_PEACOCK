@@ -1,14 +1,9 @@
 import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import YoutubePlayer from 'react-native-youtube-iframe';
-import {RouteProp, useRoute} from '@react-navigation/native';
-import {RootStackParamList} from '../App';
+import {useRoute} from '@react-navigation/native';
 import {SCREEN_WIDTH} from '../assets/dimensions/dimensions';
-
-type VideoPlayerScreenRouteProp = RouteProp<
-  RootStackParamList,
-  'VideoPlayerScreen'
->;
+import {VideoPlayerScreenRouteProp} from '../types/navigation';
 
 function VideoPlayerScreen(): React.JSX.Element {
   const route = useRoute<VideoPlayerScreenRouteProp>();

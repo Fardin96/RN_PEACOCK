@@ -9,10 +9,8 @@ import {
 import React, {useEffect, useState} from 'react';
 import {YOUTUBE_API_KEY, YOUTUBE_API_V3} from '@env';
 import {useNavigation} from '@react-navigation/native';
-import {RootStackParamList} from '../App';
-import {StackNavigationProp} from '@react-navigation/stack';
-
-type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+import {HomeScreenNavigationProp} from '../types/navigation';
+import {colors} from '../assets/colors/colors';
 
 async function getVids(): Promise<any[]> {
   const url = `${YOUTUBE_API_V3}/videos?part=snippet&chart=mostPopular&maxResults=10&key=${YOUTUBE_API_KEY}`;
@@ -84,7 +82,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'dimgray',
+    backgroundColor: colors.BG_PRIMARY,
   },
 
   scrollView: {
