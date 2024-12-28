@@ -1,8 +1,9 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {colors} from '../assets/colors/colors';
 import {getStoredData} from '../utils/functions/cachingFunctions';
 import {USER_EMAIL, USER_IMG, USER_NAME} from '../assets/constants';
+import Icon from 'react-native-vector-icons/Feather';
 
 /*
     Profile screen Features
@@ -36,11 +37,32 @@ function Profile(): React.JSX.Element {
 
   return (
     <View style={styles.root}>
-      <Image source={{uri: userPhoto}} style={styles.img} />
+      <View style={styles.profilePicContainer}>
+        <Image source={{uri: userPhoto}} style={styles.img} />
 
-      <Text style={styles.txt}>{userName.toUpperCase()}</Text>
+        <TouchableOpacity style={styles.editIcContainer}>
+          <Icon name="edit" size={30} color="white" />
+        </TouchableOpacity>
+      </View>
 
-      <Text style={[styles.txt, {fontSize: 15}]}>{userEmail}</Text>
+      <View style={{}}>
+        <Text style={styles.txt}>{userName.toUpperCase()}</Text>
+
+        <TouchableOpacity
+          style={[styles.editIcContainer, styles.nameEditIcContainer]}>
+          <Icon name="edit" size={20} color="white" />
+        </TouchableOpacity>
+      </View>
+
+      <Text style={[styles.txt, styles.email]}>{userEmail}</Text>
+
+      <TouchableOpacity style={styles.savedVids} onPress={() => {}}>
+        <Text style={styles.txtBtn}>Saved Vids - 0</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.btn} onPress={() => {}}>
+        <Text style={styles.txtBtn}>Sign Out</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -55,11 +77,58 @@ const styles = StyleSheet.create({
     backgroundColor: colors.BG_PRIMARY,
   },
 
+  profilePicContainer: {
+    // borderWidth: 1, borderColor: 'blue'
+  },
+
+  editIcContainer: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+
+    // borderWidth: 1,
+    // borderColor: 'red',
+  },
+
+  nameEditIcContainer: {right: -30, bottom: 10},
+
   img: {
     height: 150,
     width: 150,
     borderRadius: 75,
   },
 
+  btn: {
+    height: 75,
+    width: 150,
+    bottom: 50,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: 'red',
+  },
+
+  savedVids: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50,
+    borderWidth: 0.5,
+    borderRadius: 5,
+    borderColor: 'white',
+    marginTop: 50,
+    paddingHorizontal: 20,
+  },
+
+  txtBtn: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+
   txt: {color: 'white', fontSize: 30, marginTop: 20},
+
+  email: {fontSize: 15},
 });
