@@ -6,8 +6,13 @@ import SignIn from './screens/Auth/SignIn';
 import VideoPlayerScreen from './screens/VideoPlayerScreen';
 import {RootStackParamList} from './types/navigation';
 import HeaderProfile from './components/HeaderProfile';
+import Profile from './screens/Profile';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+
+function empty(): React.JSX.Element {
+  return <></>;
+}
 
 function App(): React.JSX.Element {
   return (
@@ -34,6 +39,14 @@ function App(): React.JSX.Element {
           component={VideoPlayerScreen}
           options={{
             headerTitle: '',
+          }}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            headerTitle: 'My Profile',
+            headerRight: () => empty(),
           }}
         />
       </Stack.Navigator>

@@ -1,19 +1,12 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-// import {useNavigation} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 import {USER_IMG, USER_NAME} from '../../assets/constants';
-
-async function getStoredData(key: string): Promise<string | null | undefined> {
-  try {
-    return (await AsyncStorage.getItem(`${key}`)) || null;
-  } catch (e) {
-    console.warn(`Error fetching data; KEY: ${key}; ERROR: ${e}`);
-  }
-}
+import {HomeScreenNavigationProp} from '../../types/navigation';
+import {getStoredData} from '../../utils/functions/cachingFunctions';
 
 function AuthenticatedUser(): React.JSX.Element {
-  //   const navigation = useNavigation<HomeScreenNavigationProp>();
+  const navigation = useNavigation<HomeScreenNavigationProp>();
   const [userPhoto, setUserPhoto] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
 
@@ -32,7 +25,9 @@ function AuthenticatedUser(): React.JSX.Element {
   }, []);
 
   return (
-    <TouchableOpacity style={styles.root} onPress={() => {}}>
+    <TouchableOpacity
+      style={styles.root}
+      onPress={() => navigation.navigate('Profile')}>
       <Text style={[styles.unknown, styles.signinTxt]}>
         {userName.toUpperCase()}
       </Text>
@@ -68,5 +63,5 @@ const styles = StyleSheet.create({
 
   unknown: {fontSize: 20, fontWeight: 'bold', color: 'white'},
 
-  signinTxt: {fontSize: 15, marginRight: 15},
+  signinTxt: {fontSize: 15, marginRight: 15, fontStyle: 'italic'},
 });
