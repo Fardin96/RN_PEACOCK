@@ -70,7 +70,7 @@ async function onGoogleButtonPress(
     // Sign in to Firebase with the credential
     await auth().signInWithCredential(googleCredential);
 
-    navigation.pop();
+    navigation.replace('Home');
   } catch (error: unknown) {
     // Narrow down the error type
     if (error instanceof Error) {

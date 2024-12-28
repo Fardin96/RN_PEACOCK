@@ -9,7 +9,7 @@ function UnknownUser(): React.JSX.Element {
   return (
     <TouchableOpacity
       style={styles.root}
-      onPress={() => navigation.navigate('SignIn')}>
+      onPress={() => navigation.replace('SignIn')}>
       <Text style={[styles.unknown, styles.signinTxt]}>{'Sign In'}</Text>
 
       <View style={styles.user}>

@@ -9,6 +9,7 @@ async function isAuthenticated(): Promise<string | null | undefined> {
     return (await AsyncStorage.getItem(AUTH_TOKEN)) || null;
   } catch (e) {
     console.warn(`Error fetching data; KEY: ${AUTH_TOKEN}; ERROR: ${e}`);
+    return null;
   }
 }
 
@@ -19,9 +20,7 @@ function HeaderProfile(): React.JSX.Element {
     async function checkUser(): Promise<void> {
       const user = await isAuthenticated();
 
-      console.log('userExists', user);
-
-      if (user !== null || user !== undefined) {
+      if (user !== null && user !== undefined) {
         setUserExists(true);
       }
     }
@@ -30,7 +29,6 @@ function HeaderProfile(): React.JSX.Element {
   }, []);
 
   if (!userExists) {
-    console.log('this one/1');
     return <UnknownUser />;
   }
 

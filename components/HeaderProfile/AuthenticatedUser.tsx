@@ -56,14 +56,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 20,
 
-    borderWidth: 3,
-    borderColor: 'red',
+    // borderWidth: 3,
+    // borderColor: 'red',
   },
 
   img: {
-    height: 35,
-    width: 35,
-    borderRadius: 17.5,
+    height: 40,
+    width: 40,
+    borderRadius: 20,
   },
 
   unknown: {fontSize: 20, fontWeight: 'bold', color: 'white'},
