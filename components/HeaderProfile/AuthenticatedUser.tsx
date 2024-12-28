@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {USER_IMG, USER_NAME} from '../../assets/constants';
 import {HomeScreenNavigationProp} from '../../types/navigation';
-import {getStoredData} from '../../utils/functions/cachingFunctions';
+import {getLocalData} from '../../utils/functions/cachingFunctions';
 
 function AuthenticatedUser(): React.JSX.Element {
   const navigation = useNavigation<HomeScreenNavigationProp>();
@@ -12,11 +12,11 @@ function AuthenticatedUser(): React.JSX.Element {
 
   useEffect(() => {
     async function fetchUserData(): Promise<void> {
-      await getStoredData(USER_IMG).then(res => {
+      await getLocalData(USER_IMG).then(res => {
         setUserPhoto(res || '');
       });
 
-      await getStoredData(USER_NAME).then(res => {
+      await getLocalData(USER_NAME).then(res => {
         setUserName(res || '');
       });
     }

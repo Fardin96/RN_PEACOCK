@@ -1,16 +1,9 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {colors} from '../assets/colors/colors';
-import {getStoredData} from '../utils/functions/cachingFunctions';
+import {getLocalData} from '../utils/functions/cachingFunctions';
 import {USER_EMAIL, USER_IMG, USER_NAME} from '../assets/constants';
 import Icon from 'react-native-vector-icons/Feather';
-
-/*
-    Profile screen Features
-    - Display user profile name - editable
-    - Display user profile picture - editable via async storage
-    - Display user email
-*/
 
 function Profile(): React.JSX.Element {
   const [userPhoto, setUserPhoto] = useState<string>('');
@@ -19,15 +12,15 @@ function Profile(): React.JSX.Element {
 
   useEffect(() => {
     async function fetchUserData(): Promise<void> {
-      await getStoredData(USER_IMG).then(res => {
+      await getLocalData(USER_IMG).then(res => {
         setUserPhoto(res || '');
       });
 
-      await getStoredData(USER_NAME).then(res => {
+      await getLocalData(USER_NAME).then(res => {
         setUserName(res || '');
       });
 
-      await getStoredData(USER_EMAIL).then(res => {
+      await getLocalData(USER_EMAIL).then(res => {
         setUserEmail(res || '');
       });
     }
@@ -57,7 +50,8 @@ function Profile(): React.JSX.Element {
       <Text style={[styles.txt, styles.email]}>{userEmail}</Text>
 
       <TouchableOpacity style={styles.savedVids} onPress={() => {}}>
-        <Text style={styles.txtBtn}>Saved Vids - 0</Text>
+        <Text style={[styles.txtBtn, styles.saveArrow]}>Saved Vids</Text>
+        <Icon name="arrow-right" size={25} color="white" />
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.btn} onPress={() => {}}>
@@ -111,6 +105,7 @@ const styles = StyleSheet.create({
   },
 
   savedVids: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     height: 50,
@@ -120,6 +115,8 @@ const styles = StyleSheet.create({
     marginTop: 50,
     paddingHorizontal: 20,
   },
+
+  saveArrow: {marginRight: 15},
 
   txtBtn: {
     color: 'white',
