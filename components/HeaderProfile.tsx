@@ -1,19 +1,11 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import React from 'react';
+import UnknownUser from './HeaderProfile/UnknownUser';
 
 function HeaderProfile(): React.JSX.Element {
-  return <View style={styles.root}></View>;
+  return <UnknownUser />;
 }
 
 export default HeaderProfile;
 
-const styles = StyleSheet.create({
-  root: {
-    height: 40,
-    width: 40,
-    borderRadius: 20,
-
-    borderWidth: 3,
-    borderColor: 'red',
-  },
-});
+const styles = StyleSheet.create({});

@@ -8,6 +8,32 @@ import {
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {colors} from '../../assets/colors/colors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {SignInResult} from '../../types/userData';
+import {
+  AUTH_TOKEN,
+  USER_EMAIL,
+  USER_ID,
+  USER_IMG,
+  USER_NAME,
+} from '../../assets/constants';
+
+async function storeData(key: string, value: string): Promise<void> {
+  try {
+    await AsyncStorage.setItem(`${key}`, value);
+  } catch (e) {
+    console.warn(`Error storing data; KEY: ${key}; ERROR: ${e}`);
+  }
+}
+
+async function storeUserData(signInResult: SignInResult): Promise<void> {
+  await storeData(AUTH_TOKEN, signInResult.data.idToken || '');
+  await storeData(USER_IMG, signInResult.data.user.photo || '');
+  await storeData(USER_NAME, signInResult.data.user.name || '');
+  await storeData(USER_ID, signInResult.data.user.id || '');
+  await storeData(USER_EMAIL, signInResult.data.user.email || '');
+}
 
 async function onGoogleButtonPress(): Promise<void> {
   try {
@@ -30,6 +56,12 @@ async function onGoogleButtonPress(): Promise<void> {
     const googleCredential = auth.GoogleAuthProvider.credential(
       signInResult.data.idToken,
     );
+
+    // console.log(
+    //   '+--------------------------------------------------------------+',
+    // );
+    // console.log('sign in result', JSON.stringify(signInResult, null, 2));
+    await storeUserData(signInResult);
 
     // Sign in to Firebase with the credential
     await auth().signInWithCredential(googleCredential);
@@ -80,6 +112,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: colors.BG_PRIMARY,
   },
 
   btn: {

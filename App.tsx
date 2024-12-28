@@ -24,7 +24,11 @@ function App(): React.JSX.Element {
           headerTintColor: 'white',
         }}>
         <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="SignIn" component={SignIn} />
+        <Stack.Screen
+          name="SignIn"
+          component={SignIn}
+          options={{headerShown: false}}
+        />
         <Stack.Screen
           name="VideoPlayerScreen"
           component={VideoPlayerScreen}
