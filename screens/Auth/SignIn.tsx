@@ -18,6 +18,8 @@ import {
   USER_IMG,
   USER_NAME,
 } from '../../assets/constants';
+import {SignInNavigationProp} from '../../types/navigation';
+import {useNavigation} from '@react-navigation/native';
 
 async function storeData(key: string, value: string): Promise<void> {
   try {
@@ -35,7 +37,9 @@ async function storeUserData(signInResult: SignInResult): Promise<void> {
   await storeData(USER_EMAIL, signInResult.data.user.email || '');
 }
 
-async function onGoogleButtonPress(): Promise<void> {
+async function onGoogleButtonPress(
+  navigation: SignInNavigationProp,
+): Promise<void> {
   try {
     // Check if Google Play Services are available
     await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
@@ -65,6 +69,8 @@ async function onGoogleButtonPress(): Promise<void> {
 
     // Sign in to Firebase with the credential
     await auth().signInWithCredential(googleCredential);
+
+    navigation.pop();
   } catch (error: unknown) {
     // Narrow down the error type
     if (error instanceof Error) {
@@ -87,6 +93,8 @@ async function onGoogleButtonPress(): Promise<void> {
 }
 
 function SignIn(): React.JSX.Element {
+  const navigation = useNavigation<SignInNavigationProp>();
+
   useEffect(() => {
     GoogleSignin.configure({
       webClientId:
@@ -98,7 +106,7 @@ function SignIn(): React.JSX.Element {
     <SafeAreaView style={styles.root}>
       <TouchableOpacity
         style={styles.btn}
-        onPress={() => onGoogleButtonPress()}>
+        onPress={() => onGoogleButtonPress(navigation)}>
         <Text style={styles.txt}>Sign-In with google</Text>
       </TouchableOpacity>
     </SafeAreaView>

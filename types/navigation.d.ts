@@ -17,3 +17,8 @@ export type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   'Home'
 >;
+
+export type SignInNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'SignIn'
+>;
