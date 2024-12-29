@@ -1,14 +1,44 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {colors} from '../assets/colors/colors';
-import {getLocalData} from '../utils/functions/cachingFunctions';
+import {getLocalData, setLocalData} from '../utils/functions/cachingFunctions';
 import {USER_EMAIL, USER_IMG, USER_NAME} from '../assets/constants';
 import Icon from 'react-native-vector-icons/Feather';
+import {
+  ImageLibraryOptions,
+  launchImageLibrary,
+} from 'react-native-image-picker';
+
+const openImagePicker = (
+  setSelectedImage: (uri: string | undefined) => void,
+): void => {
+  const options: ImageLibraryOptions = {
+    mediaType: 'photo',
+    includeBase64: false,
+    maxHeight: 2000,
+    maxWidth: 2000,
+  };
+
+  launchImageLibrary(options, response => {
+    if (response.didCancel) {
+      console.log('User cancelled image picker');
+    } else if (response.errorCode) {
+      console.log('Image picker error: ', response.errorMessage);
+    } else {
+      let imageUri: string = response.assets?.[0]?.uri || '';
+      setSelectedImage(imageUri);
+
+      // store to local storage ONLY
+      setLocalData(USER_IMG, imageUri);
+    }
+  });
+};
 
 function Profile(): React.JSX.Element {
-  const [userPhoto, setUserPhoto] = useState<string>('');
+  const [userPhoto, setUserPhoto] = useState<string | undefined>('');
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
+  const [selectedImg, setSelectedImg] = useState<string | undefined>('');
 
   useEffect(() => {
     async function fetchUserData(): Promise<void> {
@@ -23,17 +53,25 @@ function Profile(): React.JSX.Element {
       await getLocalData(USER_EMAIL).then(res => {
         setUserEmail(res || '');
       });
+
+      if (selectedImg !== '') {
+        setUserPhoto(selectedImg);
+      }
     }
 
     fetchUserData();
-  }, []);
+  }, [selectedImg]);
 
   return (
     <View style={styles.root}>
       <View style={styles.profilePicContainer}>
         <Image source={{uri: userPhoto}} style={styles.img} />
 
-        <TouchableOpacity style={styles.editIcContainer}>
+        <TouchableOpacity
+          style={styles.editIcContainer}
+          onPress={() => {
+            openImagePicker(setSelectedImg);
+          }}>
           <Icon name="edit" size={30} color="white" />
         </TouchableOpacity>
       </View>

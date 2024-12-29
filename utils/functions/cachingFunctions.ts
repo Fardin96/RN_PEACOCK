@@ -10,7 +10,10 @@ export async function getLocalData(
   }
 }
 
-export async function setLocalData(key: string, value: string): Promise<void> {
+export async function setLocalData(
+  key: string | undefined,
+  value: string,
+): Promise<void> {
   try {
     await AsyncStorage.setItem(`${key}`, value);
   } catch (e) {
