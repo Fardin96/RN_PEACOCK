@@ -57,12 +57,16 @@ function VideoPlayerScreen(): React.JSX.Element {
 
   return (
     <View style={styles.root}>
-      <YoutubePlayer
-        height={300}
-        width={SCREEN_WIDTH}
-        play={true}
-        videoId={videoId}
-      />
+      <View>
+        <YoutubePlayer
+          height={230}
+          width={SCREEN_WIDTH}
+          play={false}
+          videoId={videoId}
+        />
+
+        <Text style={styles.vidTitle}>{videoTitle}</Text>
+      </View>
 
       <View style={styles.interactionContainer}>
         {isLiked ? (
@@ -91,14 +95,14 @@ function VideoPlayerScreen(): React.JSX.Element {
             onPress={() => setIsSaved(prev => !prev)}
             style={styles.saveRed}>
             <Icon name="save" size={30} color="red" />
-            <Text style={{color: 'red'}}>{'saved'}</Text>
+            <Text style={{color: 'red', fontWeight: '900'}}>{'saved'}</Text>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
             onPress={() => setIsSaved(prev => !prev)}
             style={styles.saveWhite}>
             <Icon name="save" size={30} color="white" />
-            <Text style={{color: 'white'}}>{'save'}</Text>
+            <Text style={{color: 'white', fontWeight: '900'}}>{'save'}</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -118,11 +122,20 @@ const styles = StyleSheet.create({
     // borderColor: 'blue',
   },
 
+  vidTitle: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+
+    marginLeft: 15,
+    marginTop: 15,
+  },
+
   interactionContainer: {
     width: SCREEN_WIDTH,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: -50,
+    marginTop: 25,
 
     // borderWidth: 1,
     // borderColor: 'red',

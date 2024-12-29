@@ -11,8 +11,6 @@ export type RootStackParamList = {
     videoTitle: string;
     videoThumbnail: string;
     videoUrl: string;
-    likes: number;
-    comments: comment[];
   };
 };
 

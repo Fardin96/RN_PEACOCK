@@ -110,5 +110,11 @@ const styles = StyleSheet.create({
     // width: 300,
   },
 
-  vidTitle: {color: 'white', fontSize: 20, fontWeight: 'bold'},
+  vidTitle: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginLeft: 10,
+    marginTop: 10,
+  },
 });
