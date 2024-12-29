@@ -60,7 +60,12 @@ function Home(): React.JSX.Element {
             key={video.id}
             style={styles.videoContainer}
             onPress={() =>
-              navigation.navigate('VideoPlayerScreen', {videoId: video.id})
+              navigation.navigate('VideoPlayerScreen', {
+                videoId: video.id,
+                videoTitle: video.snippet.title,
+                videoThumbnail: video.snippet.thumbnails.standard.url,
+                videoUrl: `https://www.youtube.com/watch?v=${video.id}`,
+              })
             }>
             <Image
               source={{uri: video.snippet.thumbnails.standard.url}}

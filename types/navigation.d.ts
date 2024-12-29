@@ -6,13 +6,15 @@ export type RootStackParamList = {
   Home: undefined;
   SignIn: undefined;
   Profile: undefined;
-  VideoPlayerScreen: {videoId: string};
+  VideoPlayerScreen: {
+    videoId: string;
+    videoTitle: string;
+    videoThumbnail: string;
+    videoUrl: string;
+    likes: number;
+    comments: comment[];
+  };
 };
-
-export type HomeScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'Profile'
->;
 
 export type VideoPlayerScreenRouteProp = RouteProp<
   RootStackParamList,
