@@ -9,9 +9,11 @@ import {
   launchImageLibrary,
 } from 'react-native-image-picker';
 
-const openImagePicker = (
+async function openImagePicker(
   setSelectedImage: (uri: string | undefined) => void,
-): void => {
+): Promise<string> {
+  let imageUri: string = '';
+
   const options: ImageLibraryOptions = {
     mediaType: 'photo',
     includeBase64: false,
@@ -19,20 +21,19 @@ const openImagePicker = (
     maxWidth: 2000,
   };
 
-  launchImageLibrary(options, response => {
+  await launchImageLibrary(options, response => {
     if (response.didCancel) {
       console.log('User cancelled image picker');
     } else if (response.errorCode) {
       console.log('Image picker error: ', response.errorMessage);
     } else {
-      let imageUri: string = response.assets?.[0]?.uri || '';
+      imageUri = response.assets?.[0]?.uri || '';
       setSelectedImage(imageUri);
-
-      // store to local storage ONLY
-      setLocalData(USER_IMG, imageUri);
     }
   });
-};
+
+  return imageUri;
+}
 
 function Profile(): React.JSX.Element {
   const [userPhoto, setUserPhoto] = useState<string | undefined>('');
@@ -70,7 +71,10 @@ function Profile(): React.JSX.Element {
         <TouchableOpacity
           style={styles.editIcContainer}
           onPress={() => {
-            openImagePicker(setSelectedImg);
+            openImagePicker(setSelectedImg).then(imageUri => {
+              // store to local storage ONLY
+              setLocalData(USER_IMG, imageUri);
+            });
           }}>
           <Icon name="edit" size={30} color="white" />
         </TouchableOpacity>
