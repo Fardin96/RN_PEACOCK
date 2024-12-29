@@ -27,7 +27,7 @@ function AuthenticatedUser(): React.JSX.Element {
   return (
     <TouchableOpacity
       style={styles.root}
-      onPress={() => navigation.navigate('Profile')}>
+      onPress={() => navigation.replace('Profile')}>
       <Text style={[styles.unknown, styles.signinTxt]}>
         {userName.toUpperCase()}
       </Text>

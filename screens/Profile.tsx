@@ -1,13 +1,26 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {colors} from '../assets/colors/colors';
-import {getLocalData, setLocalData} from '../utils/functions/cachingFunctions';
-import {USER_EMAIL, USER_IMG, USER_NAME} from '../assets/constants';
+import {
+  clearLocalData,
+  getLocalData,
+  setLocalData,
+} from '../utils/functions/cachingFunctions';
+import {USER_EMAIL, USER_ID, USER_IMG, USER_NAME} from '../assets/constants';
 import Icon from 'react-native-vector-icons/Feather';
 import {
   ImageLibraryOptions,
   launchImageLibrary,
 } from 'react-native-image-picker';
+import {useNavigation} from '@react-navigation/native';
+import {ProfileScreenNavigationProp} from '../types/navigation';
 
 async function openImagePicker(
   setSelectedImage: (uri: string | undefined) => void,
@@ -36,10 +49,13 @@ async function openImagePicker(
 }
 
 function Profile(): React.JSX.Element {
+  const navigation = useNavigation<ProfileScreenNavigationProp>();
+
   const [userPhoto, setUserPhoto] = useState<string | undefined>('');
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
+  const [userName, setUserName] = useState<string>('');
+  const [userEmail, setUserEmail] = useState<string>('');
   const [selectedImg, setSelectedImg] = useState<string | undefined>('');
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchUserData(): Promise<void> {
@@ -80,13 +96,28 @@ function Profile(): React.JSX.Element {
         </TouchableOpacity>
       </View>
 
-      <View style={{}}>
-        <Text style={styles.txt}>{userName.toUpperCase()}</Text>
-
-        <TouchableOpacity
-          style={[styles.editIcContainer, styles.nameEditIcContainer]}>
-          <Icon name="edit" size={20} color="white" />
-        </TouchableOpacity>
+      <View>
+        {isEditing ? (
+          <TextInput
+            maxLength={30}
+            style={[styles.txt, styles.txtInput]}
+            value={userName}
+            onChangeText={text => setUserName(text)}
+            onEndEditing={() => {
+              setIsEditing(prev => !prev);
+              setLocalData(USER_NAME, userName);
+            }}
+          />
+        ) : (
+          <>
+            <Text style={styles.txt}>{userName?.toUpperCase()}</Text>
+            <TouchableOpacity
+              style={[styles.editIcContainer, styles.nameEditIcContainer]}
+              onPress={() => setIsEditing(prev => !prev)}>
+              <Icon name="edit" size={20} color="white" />
+            </TouchableOpacity>
+          </>
+        )}
       </View>
 
       <Text style={[styles.txt, styles.email]}>{userEmail}</Text>
@@ -96,7 +127,18 @@ function Profile(): React.JSX.Element {
         <Icon name="arrow-right" size={25} color="white" />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.btn} onPress={() => {}}>
+      <TouchableOpacity
+        style={styles.btn}
+        onPress={() => {
+          // clear user data locally
+          clearLocalData(USER_ID);
+          clearLocalData(USER_NAME);
+          clearLocalData(USER_IMG);
+          clearLocalData(USER_EMAIL);
+
+          // might need to replace!
+          navigation.navigate('Home');
+        }}>
         <Text style={styles.txtBtn}>Sign Out</Text>
       </TouchableOpacity>
     </View>
@@ -168,6 +210,13 @@ const styles = StyleSheet.create({
   },
 
   txt: {color: 'white', fontSize: 30, marginTop: 20},
+
+  txtInput: {
+    borderWidth: 1,
+    borderColor: 'white',
+    borderRadius: 5,
+    paddingHorizontal: 20,
+  },
 
   email: {fontSize: 15},
 });

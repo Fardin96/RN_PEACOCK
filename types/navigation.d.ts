@@ -9,6 +9,11 @@ export type RootStackParamList = {
   VideoPlayerScreen: {videoId: string};
 };
 
+export type HomeScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'Profile'
+>;
+
 export type VideoPlayerScreenRouteProp = RouteProp<
   RootStackParamList,
   'VideoPlayerScreen'
@@ -17,6 +22,11 @@ export type VideoPlayerScreenRouteProp = RouteProp<
 export type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   'Home'
+>;
+
+export type ProfileScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'Profile'
 >;
 
 export type SignInNavigationProp = StackNavigationProp<

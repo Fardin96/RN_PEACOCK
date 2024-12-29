@@ -20,3 +20,11 @@ export async function setLocalData(
     console.warn(`Error storing data; KEY: ${key}; ERROR: ${e}`);
   }
 }
+
+export async function clearLocalData(key: string | undefined): Promise<void> {
+  try {
+    await AsyncStorage.removeItem(`${key}`);
+  } catch (e) {
+    console.warn(`Error removing data; KEY: ${key}; ERROR: ${e}`);
+  }
+}
