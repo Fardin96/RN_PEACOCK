@@ -7,12 +7,9 @@ import VideoPlayerScreen from './screens/VideoPlayerScreen';
 import {RootStackParamList} from './types/navigation';
 import HeaderProfile from './components/HeaderProfile';
 import Profile from './screens/Profile';
+import Cancel from './components/Cancel';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
-
-function empty(): React.JSX.Element {
-  return <></>;
-}
 
 function App(): React.JSX.Element {
   return (
@@ -28,7 +25,11 @@ function App(): React.JSX.Element {
           headerRight: () => HeaderProfile(),
           headerTintColor: 'white',
         }}>
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{headerBackVisible: false}}
+        />
         <Stack.Screen
           name="SignIn"
           component={SignIn}
@@ -46,7 +47,8 @@ function App(): React.JSX.Element {
           component={Profile}
           options={{
             headerTitle: 'My Profile',
-            headerRight: () => empty(),
+            headerRight: () => Cancel(),
+            headerBackVisible: false,
           }}
         />
       </Stack.Navigator>

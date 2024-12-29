@@ -21,19 +21,9 @@ function VideoPlayerScreen(): React.JSX.Element {
         width={SCREEN_WIDTH}
         play={true}
         videoId={videoId}
-        webViewStyle={{borderWidth: 1, borderColor: 'green'}}
       />
 
-      <View
-        style={{
-          width: SCREEN_WIDTH,
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          marginTop: -50,
-
-          // borderWidth: 1,
-          // borderColor: 'red',
-        }}>
+      <View style={styles.interactionContainer}>
         {isLiked ? (
           <TouchableOpacity onPress={() => setIsLiked(prev => !prev)}>
             <Icon name="heart" size={30} color="red" />
@@ -72,6 +62,16 @@ const styles = StyleSheet.create({
 
     // borderWidth: 1,
     // borderColor: 'blue',
+  },
+
+  interactionContainer: {
+    width: SCREEN_WIDTH,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: -50,
+
+    // borderWidth: 1,
+    // borderColor: 'red',
   },
 
   txt: {color: 'black'},
