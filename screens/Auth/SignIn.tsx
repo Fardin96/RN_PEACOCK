@@ -6,7 +6,6 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {colors} from '../../assets/colors/colors';
 import {SignInResult} from '../../types/userData';
@@ -58,10 +57,10 @@ async function onGoogleButtonPress(
       throw new Error('No data found in signInResult');
     }
 
-    // Create Google credential
-    const googleCredential = auth.GoogleAuthProvider.credential(
-      signInResult.data.idToken,
-    );
+    // // Create Google credential
+    // const googleCredential = auth.GoogleAuthProvider.credential(
+    //   signInResult.data.idToken,
+    // );
 
     // console.log(
     //   '+--------------------------------------------------------------+',
@@ -69,8 +68,8 @@ async function onGoogleButtonPress(
     // console.log('sign in result', JSON.stringify(signInResult, null, 2));
     await storeUserData(signInResult);
 
-    // Sign in to Firebase with the credential
-    await auth().signInWithCredential(googleCredential);
+    // // Sign in to Firebase with the credential
+    // await auth().signInWithCredential(googleCredential);
 
     navigation.replace('Home');
   } catch (error: unknown) {

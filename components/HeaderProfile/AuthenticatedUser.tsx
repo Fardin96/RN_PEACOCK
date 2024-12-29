@@ -13,10 +13,14 @@ function AuthenticatedUser(): React.JSX.Element {
   useEffect(() => {
     async function fetchUserData(): Promise<void> {
       await getLocalData(USER_IMG).then(res => {
+        console.log('photo: ', res);
+
         setUserPhoto(res || '');
       });
 
       await getLocalData(USER_NAME).then(res => {
+        console.log('name: ', res);
+
         setUserName(res || '');
       });
     }

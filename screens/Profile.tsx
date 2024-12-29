@@ -13,7 +13,13 @@ import {
   getLocalData,
   setLocalData,
 } from '../utils/functions/cachingFunctions';
-import {USER_EMAIL, USER_ID, USER_IMG, USER_NAME} from '../assets/constants';
+import {
+  AUTH_TOKEN,
+  USER_EMAIL,
+  USER_ID,
+  USER_IMG,
+  USER_NAME,
+} from '../assets/constants';
 import Icon from 'react-native-vector-icons/Feather';
 import {
   ImageLibraryOptions,
@@ -21,6 +27,7 @@ import {
 } from 'react-native-image-picker';
 import {useNavigation} from '@react-navigation/native';
 import {ProfileScreenNavigationProp} from '../types/navigation';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 async function openImagePicker(
   setSelectedImage: (uri: string | undefined) => void,
@@ -129,12 +136,16 @@ function Profile(): React.JSX.Element {
 
       <TouchableOpacity
         style={styles.btn}
-        onPress={() => {
+        onPress={async () => {
           // clear user data locally
           clearLocalData(USER_ID);
           clearLocalData(USER_NAME);
           clearLocalData(USER_IMG);
           clearLocalData(USER_EMAIL);
+          clearLocalData(AUTH_TOKEN);
+
+          // sign-out of google
+          await GoogleSignin.signOut();
 
           // might need to replace!
           navigation.navigate('Home');
