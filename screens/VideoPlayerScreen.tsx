@@ -95,14 +95,14 @@ function VideoPlayerScreen(): React.JSX.Element {
             onPress={() => setIsSaved(prev => !prev)}
             style={styles.saveRed}>
             <Icon name="save" size={30} color="red" />
-            <Text style={{color: 'red', fontWeight: '900'}}>{'saved'}</Text>
+            <Text style={styles.saveTxtRed}>{'saved'}</Text>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
             onPress={() => setIsSaved(prev => !prev)}
             style={styles.saveWhite}>
             <Icon name="save" size={30} color="white" />
-            <Text style={{color: 'white', fontWeight: '900'}}>{'save'}</Text>
+            <Text style={styles.saveTxtWhite}>{'save'}</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -126,7 +126,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
-
     marginLeft: 15,
     marginTop: 15,
   },
@@ -172,10 +171,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
+  saveTxtRed: {color: 'red', fontWeight: '900'},
+
   saveWhite: {
     alignItems: 'center',
     justifyContent: 'center',
   },
 
-  txt: {color: 'black'},
+  saveTxtWhite: {color: 'white', fontWeight: '900'},
 });

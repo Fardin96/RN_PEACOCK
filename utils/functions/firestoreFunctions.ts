@@ -88,3 +88,5 @@ export async function fetchVideoIfExists(
     throw new Error('Could not fetch video');
   }
 }
+
+// export async function handleLike(videoId: string, likeCount: number) {}
