@@ -1,4 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
+import {Alert} from 'react-native';
 
 export async function addUser(
   authToken: string,
@@ -18,6 +19,7 @@ export async function addUser(
     })
     .then(() => {
       console.log('User added!');
+      Alert.alert('User added!');
     })
     .catch(error => {
       console.warn('Error adding user:', error);

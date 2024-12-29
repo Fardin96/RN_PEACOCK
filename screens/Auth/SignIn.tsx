@@ -20,6 +20,7 @@ import {
 import {SignInNavigationProp} from '../../types/navigation';
 import {useNavigation} from '@react-navigation/native';
 import {setLocalData} from '../../utils/functions/cachingFunctions';
+import {addUser} from '../../utils/functions/firestoreFunctions';
 
 async function storeUserData(signInResult: SignInResult): Promise<void> {
   await setLocalData(AUTH_TOKEN, signInResult.data.idToken || '');
@@ -27,6 +28,15 @@ async function storeUserData(signInResult: SignInResult): Promise<void> {
   await setLocalData(USER_NAME, signInResult.data.user.name || '');
   await setLocalData(USER_ID, signInResult.data.user.id || '');
   await setLocalData(USER_EMAIL, signInResult.data.user.email || '');
+
+  // storing in DB
+  await addUser(
+    signInResult.data.idToken || '',
+    signInResult.data.user.id || '',
+    signInResult.data.user.name || '',
+    signInResult.data.user.email || '',
+    signInResult.data.user.photo || '',
+  );
 }
 
 async function onGoogleButtonPress(
