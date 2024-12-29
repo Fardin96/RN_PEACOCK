@@ -15,3 +15,11 @@ export type SignInResult = {
     };
   };
 };
+
+export type savedVids = {
+  videoId: string;
+  videoTitle: string;
+  videoThumbnail: string;
+  videoUrl: string;
+  videoDescription: string;
+};

@@ -1,5 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import {Alert} from 'react-native';
+import {savedVids} from '../../types/userData';
 
 export async function addUser(
   authToken: string,
@@ -7,6 +8,7 @@ export async function addUser(
   name: string,
   email: string,
   userPhotoUrl: string,
+  savedVideos: savedVids[] = [],
 ): Promise<void> {
   await firestore()
     .collection('Users')
@@ -16,6 +18,7 @@ export async function addUser(
       name,
       email,
       userPhotoUrl,
+      savedVideos,
     })
     .then(() => {
       console.log('User added!');
