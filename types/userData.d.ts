@@ -1,3 +1,11 @@
+export type savedVids = {
+  videoId: string;
+  videoTitle: string;
+  videoThumbnail: string;
+  videoUrl: string;
+  videoDescription: string;
+};
+
 // Define the type for SignInResult
 export type SignInResult = {
   type: 'success';
@@ -14,12 +22,4 @@ export type SignInResult = {
       id: string | null; // User's unique ID
     };
   };
-};
-
-export type savedVids = {
-  videoId: string;
-  videoTitle: string;
-  videoThumbnail: string;
-  videoUrl: string;
-  videoDescription: string;
 };

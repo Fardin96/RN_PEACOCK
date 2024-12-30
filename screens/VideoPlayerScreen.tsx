@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import {useRoute} from '@react-navigation/native';
@@ -9,15 +9,17 @@ import Icon from 'react-native-vector-icons/Entypo';
 import {
   addVideo,
   fetchVideoIfExists,
+  isVideoLiked,
+  likeHandler,
 } from '../utils/functions/firestoreFunctions';
+import {getLocalData} from '../utils/functions/cachingFunctions';
+import {USER_ID} from '../assets/constants';
 
 function VideoPlayerScreen(): React.JSX.Element {
   const route = useRoute<VideoPlayerScreenRouteProp>();
   const {videoId, videoTitle, videoThumbnail, videoUrl} = route.params;
 
-  // console.log('route.params: ', route.params);
-
-  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [isLiked, setIsLiked] = useState<boolean | undefined>(false);
   const [isSaved, setIsSaved] = useState<boolean>(false);
 
   const [likeCount, setLikeCount] = useState<number>(0);
@@ -51,9 +53,38 @@ function VideoPlayerScreen(): React.JSX.Element {
         });
     }
 
+    async function checkIfLiked() {
+      const userId = await getLocalData(USER_ID);
+      const value = await isVideoLiked(userId, videoId);
+
+      setIsLiked(value);
+    }
+
     fetchVideoData();
+    checkIfLiked();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoId]);
+
+  async function toggleLike(increment: boolean) {
+    const userId = await getLocalData(USER_ID);
+
+    // user not signed in
+    if (!userId) {
+      Alert.alert('You must sign in first!');
+      return;
+    }
+
+    await likeHandler(userId, videoId, increment);
+
+    setIsLiked(increment);
+    setLikeCount(prev => {
+      if (increment) {
+        return prev + 1;
+      }
+
+      return prev - 1;
+    });
+  }
 
   return (
     <View style={styles.root}>
@@ -72,13 +103,13 @@ function VideoPlayerScreen(): React.JSX.Element {
         {isLiked ? (
           <TouchableOpacity
             style={styles.likeRed}
-            onPress={() => setIsLiked(prev => !prev)}>
+            onPress={() => toggleLike(false)}>
             <Icon name="heart" size={30} color="red" />
-            <Text style={{color: 'red'}}>{likeCount}</Text>
+            <Text style={styles.likeRedTxt}>{likeCount}</Text>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
-            onPress={() => setIsLiked(prev => !prev)}
+            onPress={() => toggleLike(true)}
             style={styles.likeWhite}>
             <Icon name="heart-outlined" size={30} color="white" />
             <Text style={styles.likeWhiteTxt}>{likeCount}</Text>
@@ -147,6 +178,8 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     // borderColor: 'blue',
   },
+
+  likeRedTxt: {color: 'red'},
 
   likeWhite: {
     alignItems: 'center',

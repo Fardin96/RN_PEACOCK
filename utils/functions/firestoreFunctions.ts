@@ -9,6 +9,7 @@ export async function addUser(
   name: string,
   email: string,
   userPhotoUrl: string,
+  likedVideos: string[] = [],
   savedVideos: savedVids[] = [],
 ): Promise<void> {
   await firestore()
@@ -19,6 +20,7 @@ export async function addUser(
       name,
       email,
       userPhotoUrl,
+      likedVideos,
       savedVideos,
     })
     .then(() => {
@@ -80,7 +82,7 @@ export async function fetchVideoIfExists(
       videoTitle: videoData.videoTitle,
       videoThumbnail: videoData.videoThumbnail,
       videoUrl: videoData.videoUrl,
-      likes: videoData.likes || 0,
+      likes: videoData.likes,
       comments: videoData.comments || [],
     };
   } catch (error) {
@@ -89,4 +91,118 @@ export async function fetchVideoIfExists(
   }
 }
 
-// export async function handleLike(videoId: string, likeCount: number) {}
+export async function likeHandler(
+  userId: string,
+  videoId: string,
+  increment: boolean,
+): Promise<void> {
+  const db = firestore();
+
+  try {
+    // Reference to the Users collection
+    const userRef = db.collection('Users').where('userId', '==', userId);
+    const userSnapshot = await userRef.get();
+
+    if (userSnapshot.empty) {
+      console.warn('User not found');
+      Alert.alert('Error', 'User not found');
+      return;
+    }
+
+    const userDoc = userSnapshot.docs[0];
+    const userData = userDoc.data();
+    const likedVideos = userData.likedVideos || [];
+
+    // Update user's likedVideos array
+    if (increment) {
+      if (!likedVideos.includes(videoId)) {
+        likedVideos.push(videoId);
+      } else {
+        console.log('Video already liked by user');
+        return;
+      }
+    } else {
+      const index = likedVideos.indexOf(videoId);
+      if (index !== -1) {
+        likedVideos.splice(index, 1);
+      } else {
+        console.log('Video not liked by user');
+        return;
+      }
+    }
+
+    await userDoc.ref.update({likedVideos});
+
+    // Reference to the Videos collection
+    const videoRef = db.collection('Videos').where('videoId', '==', videoId);
+    const videoSnapshot = await videoRef.get();
+
+    if (videoSnapshot.empty) {
+      console.warn('Video not found');
+      Alert.alert('Error', 'Video not found');
+      return;
+    }
+
+    const videoDoc = videoSnapshot.docs[0];
+    const videoData = videoDoc.data();
+    const currentLikes = videoData.likes || 0;
+
+    // Update video's likes count
+    const newLikes = increment
+      ? currentLikes + 1
+      : Math.max(currentLikes - 1, 0);
+
+    await videoDoc.ref.update({likes: newLikes});
+
+    // console.log(
+    //   `Like operation successful. User ${userId} ${
+    //     increment ? 'liked' : 'unliked'
+    //   } video ${videoId}.`,
+    // );
+    // Alert.alert(
+    //   'Success',
+    //   `Video ${increment ? 'liked' : 'unliked'}! New like count: ${newLikes}`,
+    // );
+  } catch (error) {
+    console.error('Error in likeHandler:', error);
+    Alert.alert('Error', 'Could not update like information');
+  }
+}
+
+export async function isVideoLiked(
+  userId: string | null | undefined,
+  videoId: string,
+): Promise<boolean | undefined> {
+  const db = firestore();
+
+  try {
+    // Reference to the Users collection
+    const userRef = db.collection('Users').where('userId', '==', userId);
+    const userSnapshot = await userRef.get();
+
+    if (userSnapshot.empty) {
+      console.warn('User not found');
+      Alert.alert('Error', 'User not found');
+      return false;
+    }
+
+    const userDoc = userSnapshot.docs[0];
+    const userData = userDoc.data();
+    const likedVideos = userData.likedVideos || [];
+
+    return likedVideos.includes(videoId);
+
+    // console.log(
+    //   `Like operation successful. User ${userId} ${
+    //     increment ? 'liked' : 'unliked'
+    //   } video ${videoId}.`,
+    // );
+    // Alert.alert(
+    //   'Success',
+    //   `Video ${increment ? 'liked' : 'unliked'}! New like count: ${newLikes}`,
+    // );
+  } catch (error) {
+    console.error('Error in like-finder:', error);
+    Alert.alert('Error', 'Could not find like information');
+  }
+}
